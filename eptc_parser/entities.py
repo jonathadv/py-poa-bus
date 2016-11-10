@@ -33,7 +33,7 @@ class BusLine():
 
     def to_json(self):
         """ Generates JSON representation"""
-        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder)
+        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
 
     def __str__(self):
         """ to string method """
@@ -74,7 +74,7 @@ class Schedule():
 
     def to_json(self):
         """ Generates JSON representation"""
-        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder)
+        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
 
 
 class ComplexEncoder(json.JSONEncoder):
