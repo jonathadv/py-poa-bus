@@ -42,8 +42,8 @@ class BusLine():
         for sch in self.schedules:
             string += 'Direction: %s, Schedule Type: %s\n' % (sch.direction, sch.schedule_day)
 
-            for dep in sch.departures:
-                string += '%s\n' % dep
+            for deperture in sch.timetable:
+                string += '%s\n' % deperture
 
         return string
 
@@ -54,11 +54,11 @@ class Schedule():
         """ __init__ """
         self.schedule_day = schedule_day
         self.direction = direction
-        self.departures = [] if departures is None else departures
+        self.timetable = [] if departures is None else departures
 
     def add_departure_time(self, time):
         """ method to add a new time to depertures list"""
-        self.departures.append(time)
+        self.timetable.append(time)
 
     def get_schedule_day(self):
         """ get_schedule_day """
@@ -68,9 +68,9 @@ class Schedule():
         """ get_direction """
         return self.direction
 
-    def get_departures(self):
-        """ get_departures """
-        return self.departures
+    def get_timetable(self):
+        """ get_timetable """
+        return self.timetable
 
     def to_json(self):
         """ Generates JSON representation"""
