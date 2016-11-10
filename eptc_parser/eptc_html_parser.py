@@ -8,6 +8,7 @@ import requests
 import pkg_resources
 from bs4 import BeautifulSoup
 from . entities import BusLine, Schedule
+from . exceptions import NoContentAvailableException, RemoteServerErrorException
 
 def load_config():
     """ Function to open configuration file """
@@ -53,7 +54,7 @@ def parse_eptc_html(html_doc):
             div_list.append(div.text)
 
     if len(div_list) is 0:
-        raise Exception('Unable to retrieve information from EPTC web site. '
+        raise NoContentAvailableException('Unable to retrieve information from EPTC web site. '
                         'Please check the bus line code and try again.')
 
     line_title = div_list[0].split('-')
@@ -90,7 +91,7 @@ def get_html(url):
     response = requests.get(url)
 
     if response.status_code is not 200:
-        raise Exception('Unable to get EPTC page content. HTTP code: %s, reason: %s' % \
+        raise RemoteServerErrorException('Unable to get EPTC page content. HTTP code: %s, reason: %s' % \
             (response.status_code, response.reason))
 
     return response.text
