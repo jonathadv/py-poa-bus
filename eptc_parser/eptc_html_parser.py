@@ -55,7 +55,7 @@ def parse_eptc_html(html_doc):
 
     if len(div_list) is 0:
         raise NoContentAvailableException('Unable to retrieve information from EPTC web site. '
-                        'Please check the bus line code and try again.')
+                                          'Please check the bus line code and try again.')
 
     line_title = div_list[0].split('-')
     line_code = line_title[0].strip()
@@ -91,7 +91,8 @@ def get_html(url):
     response = requests.get(url)
 
     if response.status_code is not 200:
-        raise RemoteServerErrorException('Unable to get EPTC page content. HTTP code: %s, reason: %s' % \
+        raise RemoteServerErrorException('Unable to get EPTC page content. '
+                                         'HTTP code: %s, reason: %s' % \
             (response.status_code, response.reason))
 
     return response.text

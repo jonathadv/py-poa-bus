@@ -1,4 +1,6 @@
 """ Entities """
+# pylint: disable=method-hidden
+
 import json
 
 class BusLine():
