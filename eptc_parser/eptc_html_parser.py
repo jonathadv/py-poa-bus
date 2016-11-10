@@ -1,5 +1,5 @@
 """
-This module is the interface between EPTC website and the application
+This module is the interface between EPTC web site and the application
 """
 
 import re
@@ -9,7 +9,24 @@ from . entities import BusLine, Schedule
 
 def parse_eptc_html(html_doc):
     """
-    Function to parse the HTML page
+    Function to parse the HTML page.
+    It assumes that the HTML follows the below order:
+    - Bus line's name and code
+    - Direction (origin/destination)
+    - Schedule Type (business days, saturday, sunday)
+
+    Example:
+       281 - Campo Novo      # Code and Name
+       NORTE/SUL             # Origin/Destionation
+       Dias Uteis            # Business days
+       05:40                 # Time
+       05:51                 # Time
+       Sabados               # Saturday
+       05:40                 # Time
+       06:00                 # Time
+       Domingos              # Sundays
+       06:00                 # Time
+       06:24                 # Time
     """
     div_pattern_to_find = 'align="center"><b>'
     time_re = r'(\d\d:\d\d)'
@@ -22,6 +39,10 @@ def parse_eptc_html(html_doc):
     for div in soup.find_all('div'):
         if div_pattern_to_find in str(div):
             div_list.append(div.text)
+
+    if len(div_list) is 0:
+        raise Exception('Unable to retrieve information from EPTC web site. '
+                        'Please check the bus\' line code and try again.')
 
     line_title = div_list[0].split('-')
     line_code = line_title[0].strip()
@@ -54,9 +75,6 @@ def get_html(url):
     """
     Function to retrieve the HTML Page
     """
-    if 'http://www.eptc.com.br/EPTC_Itinerarios' not in url:
-        raise ValueError('The URL send does not seem to be from EPTC')
-
     response = requests.get(url)
 
     if response.status_code is not 200:
@@ -66,10 +84,13 @@ def get_html(url):
     return response.text
 
 
-def main(url):
+def get_bus_line(line_code):
     """
-    Main Function
+    get_bus_line
     """
-    html = get_html(url)
+    url_eptc = 'http://www.eptc.com.br/EPTC_Itinerarios/Cadastro.asp'
+    url_parameters = '?Linha=%s&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0' % line_code
+
+    html = get_html(url_eptc + url_parameters)
 
     return parse_eptc_html(html)

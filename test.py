@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-t11_page = 'http://www.eptc.com.br/EPTC_Itinerarios/Cadastro.asp?Linha=101-11&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0'
+t11_page = '101-1'
 
 import eptc_parser.eptc_html_parser as parser
-result = parser.main(t11_page)
+result = parser.get_bus_line(t11_page)
 
-print (result)
+print(result)
 

@@ -1,4 +1,5 @@
 """ Entities """
+import json
 
 class BusLine():
     """ This is a bus line which has a schedule """
@@ -8,17 +9,17 @@ class BusLine():
 
         self.name = name
         self.code = code
-        self.schedule_list = []
+        self.schedules = []
 
     def add_schedule(self, schedule):
         """ method to add a new schedule to the bus """
 
-        self.schedule_list.append(schedule)
+        self.schedules.append(schedule)
 
     def get_schedule_list(self):
-        """ get_schedule_list """
+        """ get_schedules """
 
-        return self.schedule_list
+        return self.schedules
 
     def get_name(self):
         """ get_name """
@@ -30,29 +31,34 @@ class BusLine():
 
         return self.code
 
+    def to_json(self):
+        """ Generates JSON representation"""
+        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder)
+
     def __str__(self):
         """ to string method """
 
         string = 'BusLine: %s - %s\n' % (self.code, self.name)
-        for sch in self.schedule_list:
+        for sch in self.schedules:
             string += 'Direction: %s, Schedule Type: %s\n' % (sch.direction, sch.schedule_day)
 
-            for dep in sch.departures_list:
+            for dep in sch.departures:
                 string += '%s\n' % dep
 
         return string
 
+
 class Schedule():
     """ Class that represents a full bus's schedule"""
-    def __init__(self, schedule_day, direction, departures_list):
+    def __init__(self, schedule_day, direction, departures):
         """ __init__ """
         self.schedule_day = schedule_day
         self.direction = direction
-        self.departures_list = departures_list
+        self.departures = [] if departures is None else departures
 
     def add_departure_time(self, time):
         """ method to add a new time to depertures list"""
-        self.departures_list.append(time)
+        self.departures.append(time)
 
     def get_schedule_day(self):
         """ get_schedule_day """
@@ -62,6 +68,20 @@ class Schedule():
         """ get_direction """
         return self.direction
 
-    def get_departures_list(self):
-        """ get_departures_list """
-        return self.departures_list
+    def get_departures(self):
+        """ get_departures """
+        return self.departures
+
+    def to_json(self):
+        """ Generates JSON representation"""
+        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder)
+
+
+class ComplexEncoder(json.JSONEncoder):
+    """ Helper class to enable JSON convertion """
+    def default(self, obj):
+        """ This is the default method"""
+        if hasattr(obj, '__dict__'):
+            return obj.__dict__
+        else:
+            return json.JSONEncoder.default(self, obj)
