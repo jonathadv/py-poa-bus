@@ -2,10 +2,22 @@
 This module is the interface between EPTC web site and the application
 """
 
+import json
 import re
 import requests
+import pkg_resources
 from bs4 import BeautifulSoup
 from . entities import BusLine, Schedule
+
+def load_config():
+    """ Function to open configuration file """
+
+    config_file = 'config.json'
+    conf_file = open(pkg_resources.resource_filename(__package__, config_file))
+    config = json.load(conf_file)
+
+    return config
+
 
 def parse_eptc_html(html_doc):
     """
@@ -88,8 +100,9 @@ def get_bus_line(line_code):
     """
     get_bus_line
     """
-    url_eptc = 'http://www.eptc.com.br/EPTC_Itinerarios/Cadastro.asp'
-    url_parameters = '?Linha=%s&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0' % line_code
+    config = load_config()
+    url_eptc = config['eptc_schedule_url']
+    url_parameters = config['eptc_schedule_url_parameters'] % line_code
 
     html = get_html(url_eptc + url_parameters)
 
