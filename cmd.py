@@ -41,6 +41,7 @@ def run(args):
                 list_to_json(lines_list)
 
         elif args.timetable is not None:
+            print('WARNING: Timetable only supports JSON presentation', file=sys.stderr)
             timetable = facade.get_bus_line(args.timetable)
             print(timetable.to_json())
 
