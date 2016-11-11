@@ -50,7 +50,7 @@ def run(args):
 
     except NoContentAvailableException:
         print('cmd: Unable to retrieve information from EPTC web site, '
-              'maybe the content is no longer available.\n')
+              'maybe the content is no longer available.\n', file=sys.stderr)
 
 
 
