@@ -29,10 +29,16 @@ def list_to_table(list_of_obj):
 
 def run(args):
     """ Run it """
+
+    view = args.view if args.view is not None else 'json'
+
     try:
         if args.list is not None:
             lines_list = facade.list_bus_lines(args.list)
-            list_to_json(lines_list)
+            if view == 'table':
+                list_to_table(lines_list)
+            else:
+                list_to_json(lines_list)
 
         elif args.timetable is not None:
             timetable = facade.get_bus_line(args.timetable)
@@ -56,10 +62,16 @@ def main():
                        metavar='zone',
                        help='[north|south|east|public]',
                        choices=['north', 'south', 'east', 'public'])
+
     group.add_argument('--timetable', required=False,
                        metavar='line_code',
                        help='Line code like 281-1, '
                        '101-1, etc.' 'Use --list to get line codes.')
+
+    parser.add_argument('-v', '--view', metavar='format',
+                        help='[json|table]',
+                        required=False,
+                        choices=['json', 'table'])
 
     args = parser.parse_args()
 
