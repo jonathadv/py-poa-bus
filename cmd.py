@@ -8,18 +8,31 @@ import sys
 import eptc.eptc_facade as facade
 from eptc.eptc_facade import NoContentAvailableException
 
+
+def list_to_json(list_of_obj):
+    """ Convert a object list to a JSON list """
+    output = '{ "list":  %s  }' % str(list_of_obj)
+    print(output)
+
+
+def list_to_table(list_of_obj):
+    """ Convert a object list to table of two coloumns """
+    output = '{0:<12} {1}\n'.format('Line Code', 'Line Name')
+    output += '-' * 40
+    output += '\n'
+
+    for line in list_of_obj:
+        output += ('{0:<12} {1}\n'.format(line.code, line.name))
+
+    print(output)
+
+
 def run(args):
     """ Run it """
     try:
         if args.list is not None:
             lines_list = facade.list_bus_lines(args.list)
-            output = '{0:<12} {1}\n'.format('Line Code', 'Line Name')
-            output += '-' * 40
-            output += '\n'
-            for line in lines_list:
-                output += ('{0:<12} {1}\n'.format(line.code, line.name))
-
-            print(output)
+            list_to_json(lines_list)
 
         elif args.timetable is not None:
             timetable = facade.get_bus_line(args.timetable)

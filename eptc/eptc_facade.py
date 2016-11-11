@@ -115,7 +115,7 @@ def parse_bus_list_page(html_doc):
         line_name = re.sub('[ ]+', ' ', line.text).strip()
         line_code = line['value']
 
-        bus_line = BusLineItem(code=line_code, name=line_name)
+        bus_line = BusLineItem(line_code, line_name)
         bus_line_list.append(bus_line)
 
     return bus_line_list

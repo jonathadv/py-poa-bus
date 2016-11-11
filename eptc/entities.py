@@ -2,9 +2,31 @@
 # pylint: disable=method-hidden
 
 import json
-from collections import namedtuple
 
-BusLineItem = namedtuple('BusLineItem', 'code name')
+class BusLineItem():
+    """ This class represents a bus line """
+
+    def __init__(self, code, name):
+        """ __init__  """
+        self.code = code
+        self.name = name
+
+    def get_code(self):
+        """ get_code  """
+        return self.code
+
+    def get_name(self):
+        """ get_name """
+        return self.name
+
+    def __repr__(self):
+        """ Representation to this class """
+        return self.__str__()
+
+    def __str__(self):
+        """ to string method """
+        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
+
 
 class BusLine():
     """ This is a bus line which has a schedule """
