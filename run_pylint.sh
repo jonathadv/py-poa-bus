@@ -1,3 +1,3 @@
 #/usr/bin/env bash
 
-pylint eptc_parser | tee pylint_report.log
+pylint eptc | tee pylint_report.log

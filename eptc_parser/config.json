@@ -1,4 +1,0 @@
-{
-  "eptc_schedule_url": "http://www.eptc.com.br/EPTC_Itinerarios/Cadastro.asp",
-  "eptc_schedule_url_parameters": "?Linha=%s&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0"
-}

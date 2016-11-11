@@ -1,0 +1,32 @@
+{
+    "eptc_base_url": "http://www.eptc.com.br/EPTC_Itinerarios",
+ 
+    "schedule": {
+        "action": "Cadastro.asp",
+        "parameters": "Linha=%s&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0"
+    },
+
+   "list": {
+        "action": "Linha.asp",
+        "parameters": "cdEmp=%s",
+ 
+        "zones": {
+             "north": {
+                 "code": "21"
+             },
+ 
+             "south": {
+                 "code": "22"
+             },
+
+             "east": {
+                 "code": "23"
+             },
+
+             "public": {
+                 "code": "3"
+             }
+         }
+    }
+}
+

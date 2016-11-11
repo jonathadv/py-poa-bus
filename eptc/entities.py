@@ -2,6 +2,9 @@
 # pylint: disable=method-hidden
 
 import json
+from collections import namedtuple
+
+BusLineItem = namedtuple('BusLineItem', 'code name')
 
 class BusLine():
     """ This is a bus line which has a schedule """

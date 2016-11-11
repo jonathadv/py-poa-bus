@@ -7,12 +7,11 @@ import re
 import requests
 import pkg_resources
 from bs4 import BeautifulSoup
-from . entities import BusLine, Schedule
+from . entities import BusLineItem, BusLine, Schedule
 from . exceptions import NoContentAvailableException, RemoteServerErrorException
 
 def load_config():
     """ Function to open configuration file """
-
     config_file = 'config.json'
     conf_file = open(pkg_resources.resource_filename(__package__, config_file))
     config = json.load(conf_file)
@@ -20,7 +19,25 @@ def load_config():
     return config
 
 
-def parse_eptc_html(html_doc):
+def build_url(action, parameter):
+    """ Function to build URL using information
+    from config.json file """
+    config = load_config()
+
+    base_url = config['eptc_base_url']
+    url_action = config[action]['action']
+
+    if action is 'list':
+        parameter = config[action]['zones'][parameter]['code']
+
+    url_parameters = config[action]['parameters'] % parameter
+
+    url = '%s/%s?%s' % (base_url, url_action, url_parameters)
+
+    return url
+
+
+def parse_schedule_page(html_doc):
     """
     Function to parse the HTML page.
     It assumes that the HTML follows the below order:
@@ -83,6 +100,26 @@ def parse_eptc_html(html_doc):
     return bus_line
 
 
+def parse_bus_list_page(html_doc):
+    """ Function to parse the bus lines names  """
+    opened_option_tag = '<Option'
+    closed_option_re = r'</option>'
+    bus_line_list = []
+
+    if re.search(closed_option_re, html_doc, re.I) is None:
+        html_doc = html_doc.replace(opened_option_tag, closed_option_re + opened_option_tag)
+
+    soup = BeautifulSoup(html_doc, 'html.parser')
+
+    for line in soup.find_all('option'):
+        line_name = re.sub('[ ]+', ' ', line.text).strip()
+        line_code = line['value']
+
+        bus_line = BusLineItem(code=line_code, name=line_name)
+        bus_line_list.append(bus_line)
+
+    return bus_line_list
+
 
 def get_html(url):
     """
@@ -100,12 +137,20 @@ def get_html(url):
 
 def get_bus_line(line_code):
     """
-    get_bus_line
+    Get timetable from the given bus line
     """
-    config = load_config()
-    url_eptc = config['eptc_schedule_url']
-    url_parameters = config['eptc_schedule_url_parameters'] % line_code
 
-    html = get_html(url_eptc + url_parameters)
+    url = build_url('schedule', line_code)
+    html = get_html(url)
 
-    return parse_eptc_html(html)
+    return parse_schedule_page(html)
+
+
+def list_bus_lines(zone):
+    """
+    Get all bus lines from a zone
+    """
+    url = build_url('list', zone)
+    html = get_html(url)
+
+    return parse_bus_list_page(html)
