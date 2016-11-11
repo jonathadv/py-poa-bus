@@ -21,7 +21,7 @@ This tool allows the user to access some features of PyPoaBus without the need o
 ```bash
 bash~$ ./cmd.py
 
-usage: cmd.py [-h] [--list zone | --timetable line_code]
+usage: cmd.py [-h] [--list zone | --timetable line_code] [-v format]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -29,6 +29,8 @@ optional arguments:
   --timetable line_code
                         Line code like 281-1, 101-1, etc.Use --list to get
                         line codes.
+  -v format, --view format
+                        [json|table]
 
 ```
 
