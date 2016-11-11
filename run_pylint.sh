@@ -1,3 +1,3 @@
 #/usr/bin/env bash
 
-pylint eptc | tee pylint_report.log
+pylint ./cmd.py eptc | tee pylint_report.log
