@@ -7,6 +7,14 @@ import argparse
 import sys
 import eptc.eptc_facade as facade
 from eptc.eptc_facade import NoContentAvailableException
+from eptc.eptc_facade import RemoteServerErrorException
+
+def print_err(message, exit_cmd=False):
+    """ Functionto close the cmd """
+    print('cmd: %s' % message, file=sys.stderr)
+
+    if exit_cmd:
+        sys.exit(1)
 
 
 def list_to_json(list_of_obj):
@@ -41,16 +49,20 @@ def run(args):
                 list_to_json(lines_list)
 
         elif args.timetable is not None:
-            print('WARNING: Timetable only supports JSON presentation', file=sys.stderr)
+            print_err('WARNING: Timetable only supports JSON presentation')
+
             timetable = facade.get_bus_line(args.timetable)
             print(timetable.to_json())
 
         else:
-            raise ValueError('Error when parsing arguments')
+            print_err('Error when parsing arguments: %s' % args, True)
 
     except NoContentAvailableException:
-        print('cmd: Unable to retrieve information from EPTC web site, '
-              'maybe the content is no longer available.\n', file=sys.stderr)
+        print_err('Unable to retrieve information from EPTC web site, '
+                  'maybe the content is no longer available. Args = [%s]\n' % args, True)
+
+    except RemoteServerErrorException as excep:
+        print_err('Error to connect to the server: %s ' % excep, True)
 
 
 

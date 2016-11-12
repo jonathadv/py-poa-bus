@@ -125,7 +125,10 @@ def get_html(url):
     """
     Function to retrieve the HTML Page
     """
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except requests.exceptions.ConnectionError as error:
+        raise RemoteServerErrorException('Unable to establish connection.', error)
 
     if response.status_code is not 200:
         raise RemoteServerErrorException('Unable to get EPTC page content. '
