@@ -1,6 +1,6 @@
 # PyPoABus
 
-Application to retrieve the bus lines' timetables of Porto Alegre city.
+Application to retrieve the bus schedules of Porto Alegre city.
 
 * **List bus lines by zone: north, south, east, public (from Carris company)**
 * **Retrieve timetables by bus line**
@@ -11,7 +11,7 @@ Data source: www.eptc.com.br
 
 ## Why that?
 
-As far as I know, the Porto Alegre city hall doesn't provide an API to get the oficial information about bus lines' timetables. The idea here is to provide at least a interface that allows us to convert the online information from EPTC web site to a JSON representation.
+As far as I know, the Porto Alegre city hall doesn't provide an API to get the oficial information about bus schedules. The idea here is to provide at least a interface that allows us to convert the online information from EPTC web site to JSON representation.
 
 
 ## Usage
