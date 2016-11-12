@@ -138,7 +138,7 @@ def get_html(url):
     return response.text
 
 
-def get_bus_line(line_code):
+def get_bus_timetable(line_code):
     """
     Get timetable from the given bus line
     """

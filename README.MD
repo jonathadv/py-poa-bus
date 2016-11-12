@@ -39,7 +39,7 @@ As far as I know, the Porto Alegre city hall doesn't provide an API to get the o
 ```Python
 >>> import eptc.eptc_facade as facade
 >>> bus_line_code = '281-1'
->>> timetable = facade.get_bus_line(bus_line_code)
+>>> timetable = facade.get_bus_timetable(bus_line_code)
 >>> timetable.code
 '2811'
 >>> timetable.name
