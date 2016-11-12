@@ -19,7 +19,7 @@ As far as I know, the Porto Alegre city hall doesn't provide an API to get the o
 **List bus lines**
 
 ```Python
->>> import eptc.eptc_facade as facade
+>>> import pypoabus.eptc_facade as facade
 >>> zone = 'south'
 >>> list_bus_lines = facade.list_bus_lines(zone)
 >>> for i in list_bus_lines:
@@ -37,7 +37,7 @@ As far as I know, the Porto Alegre city hall doesn't provide an API to get the o
 **Get bus line timetable**
 
 ```Python
->>> import eptc.eptc_facade as facade
+>>> import pypoabus.eptc_facade as facade
 >>> bus_line_code = '281-1'
 >>> timetable = facade.get_bus_timetable(bus_line_code)
 >>> timetable.code

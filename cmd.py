@@ -6,9 +6,9 @@
 
 import argparse
 import sys
-import eptc.eptc_facade as facade
-from eptc.eptc_facade import NoContentAvailableException
-from eptc.eptc_facade import RemoteServerErrorException
+import pypoabus.eptc_facade as facade
+from pypoabus.eptc_facade import NoContentAvailableException
+from pypoabus.eptc_facade import RemoteServerErrorException
 
 def print_err(message, exit_cmd=False):
     """ Functionto close the cmd """

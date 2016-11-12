@@ -2,9 +2,9 @@
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 """
-EPTC Facade Module
+PyPoaBus
 
-Module to connect to EPTC web site and to retrieve the bus lines' data and timetables
+Module to connect to EPTC web site and to retrieve the bus lines' data and timetables.
 """
 
 
