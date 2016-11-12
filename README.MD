@@ -54,7 +54,12 @@ As far as I know, the Porto Alegre city hall doesn't provide an API to get the o
 
 ## CMD Tool
 
-This tool allows the user to access some features of PyPoaBus without the need of importing the module to another application or Python console.
+This tool allows the user to access some features of PyPoaBus without to code a new module or Python script. It handles `stdout` and `stderr` messages, so `|` (pipe) can be used to send the output to another handler.
+
+The below examples are using `jq` (https://stedolan.github.io/jq/) to format the JSON output.
+
+
+#### Help
 
 ```bash
 bash~$ ./cmd.py
@@ -71,7 +76,7 @@ optional arguments:
                         [json|table]
 
 ```
-#### Example
+#### Examples
 
 
 
