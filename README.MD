@@ -14,6 +14,14 @@ Data source: www.eptc.com.br
 As far as I know, the Porto Alegre city hall doesn't provide an API to get the oficial information about bus schedules. The idea here is to provide at least a interface that allows us to convert the online information from EPTC web site to JSON representation.
 
 
+## Install
+```bash
+git clone https://github.com/jonathadv/PyPoABus.git
+cd PyPoABus/
+sudo ./setup.py install
+```
+
+
 ## Usage
 
 **List bus lines**
