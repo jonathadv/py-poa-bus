@@ -11,8 +11,9 @@ from pypoabus import __version__, __author__, __license__
 
 setup(name='PyPoABus',
       version=__version__,
-      description='Python Distribution Utilities',
+      description='Application to retrieve the bus schedules of Porto Alegre city.',
       author=__author__,
       license=__license__,
       packages=['pypoabus'],
+      package_data={'pypoabus': ['config.json']},
      )
