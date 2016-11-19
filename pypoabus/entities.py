@@ -13,16 +13,28 @@ class BusLineItem():
 
     def __init__(self, code, name):
         """ __init__  """
-        self.code = code
-        self.name = name
+        self._code = code
+        self._name = name
 
-    def get_code(self):
-        """ get_code  """
-        return self.code
+    @property
+    def code(self):
+        """ getter method """
+        return self._code
 
-    def get_name(self):
-        """ get_name """
-        return self.name
+    @code.setter
+    def code(self, value):
+        """ setter method """
+        self._code = value
+
+    @property
+    def name(self):
+        """ getter method """
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        """ setter method """
+        self._name = value
 
     def __repr__(self):
         """ Representation to this class """
@@ -39,29 +51,29 @@ class BusLine():
     def __init__(self, name, code):
         """ __init__ """
 
-        self.name = name
-        self.code = code
-        self.schedules = []
+        self._name = name
+        self._code = code
+        self._schedules = []
 
     def add_schedule(self, schedule):
         """ method to add a new schedule to the bus """
 
-        self.schedules.append(schedule)
+        self._schedules.append(schedule)
 
-    def get_schedule_list(self):
-        """ get_schedules """
+    @property
+    def schedules(self):
+        """ schedules getter """
+        return self._schedules
 
-        return self.schedules
+    @property
+    def name(self):
+        """ name getter """
+        return self._name
 
-    def get_name(self):
-        """ get_name """
-
-        return self.name
-
-    def get_code(self):
-        """ get_code """
-
-        return self.code
+    @property
+    def code(self):
+        """ code getter """
+        return self._code
 
     def to_json(self):
         """ Generates JSON representation"""
@@ -70,8 +82,8 @@ class BusLine():
     def __str__(self):
         """ to string method """
 
-        string = 'BusLine: %s - %s\n' % (self.code, self.name)
-        for sch in self.schedules:
+        string = 'BusLine: %s - %s\n' % (self._code, self._name)
+        for sch in self._schedules:
             string += 'Direction: %s, Schedule Type: %s\n' % (sch.direction, sch.schedule_day)
 
             for deperture in sch.timetable:
@@ -84,25 +96,28 @@ class Schedule():
     """ Class that represents a full bus's schedule"""
     def __init__(self, schedule_day, direction, departures):
         """ __init__ """
-        self.schedule_day = schedule_day
-        self.direction = direction
-        self.timetable = [] if departures is None else departures
+        self._schedule_day = schedule_day
+        self._direction = direction
+        self._timetable = [] if departures is None else departures
 
     def add_departure_time(self, time):
         """ method to add a new time to depertures list"""
-        self.timetable.append(time)
+        self._timetable.append(time)
 
-    def get_schedule_day(self):
-        """ get_schedule_day """
-        return self.schedule_day
+    @property
+    def schedule_day(self):
+        """ schedule_day getter """
+        return self._schedule_day
 
-    def get_direction(self):
-        """ get_direction """
-        return self.direction
+    @property
+    def direction(self):
+        """ direction getter """
+        return self._direction
 
-    def get_timetable(self):
-        """ get_timetable """
-        return self.timetable
+    @property
+    def timetable(self):
+        """ timetable getter"""
+        return self._timetable
 
     def to_json(self):
         """ Generates JSON representation"""
