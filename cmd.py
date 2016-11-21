@@ -6,6 +6,7 @@
 
 import argparse
 import sys
+from collections import OrderedDict
 import pypoabus.eptc_facade as facade
 from pypoabus.eptc_facade import NoContentAvailableException
 from pypoabus.eptc_facade import RemoteServerErrorException
@@ -18,21 +19,65 @@ def print_err(message, exit_cmd=False):
         sys.exit(1)
 
 
+def get_table_line(data, index):
+    """
+    Function to retrieve each line from
+    the table as a single string like:
+
+    c1_value01    c2_value01
+
+    The values are returnd inside a tuble.
+
+    """
+    result_array = []
+    for key in data.keys():
+        array = data[key]
+        if len(array) > index:
+            result_array.append(array[index])
+        else:
+            result_array.append('')
+    return tuple(result_array)
+
+
+def generate_table(title, data):
+    '''
+        Function to generate a table from
+        a data structure as below:
+        {
+            'column1': ['c1_value1', 'c1_value2'],
+            'column2': ['c2_value1', 'c2_value2']
+        }
+
+        It's basically a dict where each key
+        represents a coloumn and each key's value
+        must me a list of string that represents
+        the coloumn's values.
+
+    '''
+    columns_number = len(data.keys())
+    max_column_length = 0
+
+    for key in data.keys():
+        column_length = len(data[key])
+
+        if column_length > max_column_length:
+            max_column_length = column_length
+
+    line_template = '%s\t\t' * columns_number + '\n'
+
+    table_string = '\n\t' * int(columns_number/2) + title + '\n\n'
+    table_string += line_template % tuple([key for key in data.keys()])
+    table_string += '------------------------' * columns_number + '\n'
+
+    for i in range(0, max_column_length):
+        table_string += line_template % get_table_line(data, i)
+
+    print(table_string)
+
+
 def list_to_json(list_of_obj):
     """ Convert a object list to a JSON list """
     output = '{ "list":  %s  }' % str(list_of_obj)
-    print(output)
-
-
-def list_to_table(list_of_obj):
-    """ Convert a object list to table of two coloumns """
-    output = '{0:<12} {1}\n'.format('Line Code', 'Line Name')
-    output += '-' * 40
-    output += '\n'
-
-    for line in list_of_obj:
-        output += ('{0:<12} {1}\n'.format(line.code, line.name))
-
     print(output)
 
 
@@ -44,19 +89,41 @@ def run(args):
     try:
         if args.list is not None:
             lines_list = facade.list_bus_lines(args.list)
+
             if view == 'table':
-                list_to_table(lines_list)
+                line_names = [line.name for line in lines_list]
+                line_codes = [line.code for line in lines_list]
+
+                data = OrderedDict()
+                data['Code'] = line_codes
+                data['Name'] = line_names
+
+                title = 'List of Bus lines'
+                generate_table(title, data)
+
             else:
                 list_to_json(lines_list)
 
         elif args.timetable is not None:
-            print_err('WARNING: Timetable only supports JSON presentation')
-
             timetable = facade.get_bus_timetable(args.timetable)
-            print(timetable.to_json())
+
+            if view == 'table':
+                for sched in timetable.schedules:
+                    data = OrderedDict()
+                    data['Time'] = sched.timetable
+
+                    title = '%s - %s | %s | %s' % (timetable.code,
+                                                   timetable.name,
+                                                   sched.schedule_day,
+                                                   sched.direction)
+                    generate_table(title, data)
+
+            else:
+                print(timetable.to_json())
 
         else:
             print_err('Error when parsing arguments: %s' % args, True)
+
 
     except NoContentAvailableException:
         print_err('Unable to retrieve information from EPTC web site, '
