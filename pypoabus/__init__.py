@@ -8,7 +8,8 @@ Module to connect to EPTC web site and to retrieve the bus lines' data and timet
 """
 
 
-__author__ = 'Jonatha Daguerre Vasconcelos (jonatha@daguerre.com.br)'
+__author__ = 'Jonatha Daguerre Vasconcelos'
+__author_email__ = 'jonatha@daguerre.com.br'
 __license__ = 'MIT'
 __version__ = '1.0'
 __copyright__ = 'Copyright 2016 Jonatha Daguerre Vasconcelos'
