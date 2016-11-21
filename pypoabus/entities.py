@@ -2,13 +2,42 @@
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 # pylint: disable=method-hidden
+# pylint: disable=too-few-public-methods
+
+
 
 """ Entities """
 
 
 import json
 
-class BusLineItem():
+
+
+class JSONSerializable():
+    """ Class to simplify the JSON serialization """
+
+    def __json_dict__(self):
+        """ Method to remove _ (underscore) from beggining of the attribute name """
+        simple_dict = self.__dict__.copy()
+
+        for key in simple_dict.keys():
+            if key.startswith('_'):
+                new_key = key[1:]
+                simple_dict[new_key] = simple_dict[key]
+                del simple_dict[key]
+
+        return simple_dict
+
+
+    def to_json(self):
+        """ Generates JSON representation"""
+        return json.dumps(self.__json_dict__(), sort_keys=True,
+                          cls=ComplexEncoder, ensure_ascii=False)
+
+
+
+
+class BusLineItem(JSONSerializable):
     """ This class represents a bus line """
 
     def __init__(self, code, name):
@@ -42,22 +71,20 @@ class BusLineItem():
 
     def __str__(self):
         """ to string method """
-        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
+        return self.to_json()
 
 
-class BusLine():
+class BusLine(JSONSerializable):
     """ This is a bus line which has a schedule """
 
     def __init__(self, name, code):
         """ __init__ """
-
         self._name = name
         self._code = code
         self._schedules = []
 
     def add_schedule(self, schedule):
         """ method to add a new schedule to the bus """
-
         self._schedules.append(schedule)
 
     @property
@@ -75,10 +102,6 @@ class BusLine():
         """ code getter """
         return self._code
 
-    def to_json(self):
-        """ Generates JSON representation"""
-        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
-
     def __str__(self):
         """ to string method """
 
@@ -92,7 +115,7 @@ class BusLine():
         return string
 
 
-class Schedule():
+class Schedule(JSONSerializable):
     """ Class that represents a full bus's schedule"""
     def __init__(self, schedule_day, direction, departures):
         """ __init__ """
@@ -119,16 +142,17 @@ class Schedule():
         """ timetable getter"""
         return self._timetable
 
-    def to_json(self):
-        """ Generates JSON representation"""
-        return json.dumps(self.__dict__, sort_keys=True, cls=ComplexEncoder, ensure_ascii=False)
+    def  __str__(self):
+        """ to string method """
+        return self.to_json()
+
 
 
 class ComplexEncoder(json.JSONEncoder):
     """ Helper class to enable JSON convertion """
     def default(self, obj):
         """ This is the default method"""
-        if hasattr(obj, '__dict__'):
-            return obj.__dict__
+        if hasattr(obj, '__json_dict__'):
+            return obj.__json_dict__()
         else:
             return json.JSONEncoder.default(self, obj)
