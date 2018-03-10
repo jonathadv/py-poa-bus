@@ -1,6 +1,6 @@
 # PyPoABus
 
-Application to retrieve the bus schedules of Porto Alegre city.
+Module to retrieve the bus schedules of Porto Alegre city.
 
 * **List bus lines by zone: north, south, east, public (from Carris company)**
 * **Retrieve timetables by bus line**
