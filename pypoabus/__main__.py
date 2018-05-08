@@ -7,9 +7,10 @@
 import argparse
 import sys
 from collections import OrderedDict
-import pypoabus.eptc_facade as facade
-from pypoabus.eptc_facade import NoContentAvailableException
-from pypoabus.eptc_facade import RemoteServerErrorException
+
+from . import eptc_facade as facade
+from .exceptions import NoContentAvailableException, RemoteServerErrorException
+
 
 def print_err(message, exit_cmd=False):
     """ Functionto close the cmd """
@@ -137,7 +138,7 @@ def run(args):
 def main():
     """ Main function """
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(prog='pypoabus')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--list', required=False,
                        metavar='zone',

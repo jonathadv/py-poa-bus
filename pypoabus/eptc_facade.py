@@ -7,11 +7,14 @@ This module is the interface between EPTC web site and the application
 
 import json
 import re
-import requests
+
 import pkg_resources
+import requests
 from bs4 import BeautifulSoup
-from . entities import BusLineItem, BusLine, Schedule
-from . exceptions import NoContentAvailableException, RemoteServerErrorException
+
+from .entities import BusLine, BusLineItem, Schedule
+from .exceptions import NoContentAvailableException, RemoteServerErrorException
+
 
 def load_config():
     """ Function to open configuration file """
@@ -30,7 +33,7 @@ def build_url(action, parameter):
     base_url = config['eptc_base_url']
     url_action = config[action]['action']
 
-    if action is 'list':
+    if action == 'list':
         parameter = config[action]['zones'][parameter]['code']
 
     url_parameters = config[action]['parameters'] % parameter
@@ -73,7 +76,7 @@ def parse_schedule_page(html_doc):
         if div_pattern_to_find in str(div):
             div_list.append(div.text)
 
-    if len(div_list) is 0:
+    if not div_list:
         raise NoContentAvailableException('Unable to retrieve information from EPTC web site. '
                                           'Please check the bus line code and try again.')
 
@@ -133,7 +136,7 @@ def get_html(url):
     except requests.exceptions.ConnectionError as error:
         raise RemoteServerErrorException('Unable to establish connection.', error)
 
-    if response.status_code is not 200:
+    if response.status_code != 200:
         raise RemoteServerErrorException('Unable to get EPTC page content. '
                                          'HTTP code: %s, reason: %s' % \
             (response.status_code, response.reason))
