@@ -1,6 +1,6 @@
 # PyPoABus
 
-Module to retrieve the bus schedules of Porto Alegre city.
+Module to retrieve the bus timetables of Porto Alegre city from EPTC web site
 
 * **List bus lines by zone: north, south, east, public (from Carris company)**
 * **Retrieve timetables by bus line**
@@ -21,7 +21,7 @@ So you can run:
  
 ```bash
 # Installing dependencies
-pipenv install
+$ pipenv install
 
 ```
 
@@ -29,16 +29,18 @@ Running the same command using `make`:
 
 ```bash
 # Using the Makefile
-make install
+$ make install
 
 ```
 
 
-## Install as Python Module
+## Install as Python Module in a Virtual Env
 ```bash
-git clone https://github.com/jonathadv/PyPoABus.git
-cd PyPoABus/
-python ./setup.py install
+$ git clone https://github.com/jonathadv/py-poa-bus.git
+$ cd py-poa-bus/
+$ pipenv install
+$ pipenv shell
+(py-poa-bus-owRTHeFi) $ ./setup.py install
 ```
 
 ## Usage
