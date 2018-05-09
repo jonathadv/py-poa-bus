@@ -2,7 +2,7 @@ default: help
 
 # Run pipenv install
 install:
-	pipenv install
+	pipenv install --devs
 
 # Run pylint
 lint:

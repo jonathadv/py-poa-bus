@@ -4,7 +4,7 @@ python:
     - "3.6"
 
 install:
-    - pip install --user pipenv
+    - pip install pipenv
     - make install
 
 script:
