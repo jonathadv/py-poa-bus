@@ -8,6 +8,12 @@ install:
 lint:
 	pipenv run pylint ./setup.py pypoabus
 
+
+# Run tests with pytest
+test:
+	pytest -s --verbose --durations=5 --cov=pypoabus ./tests
+
+
 # Sort imports as PEP8
 isort:
 	pipenv run isort **/*.py

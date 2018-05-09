@@ -41,7 +41,7 @@ def get_table_line(data, index):
 
 
 def generate_table(title, data):
-    '''
+    """
         Function to generate a table from
         a data structure as below:
         {
@@ -54,7 +54,7 @@ def generate_table(title, data):
         must me a list of string that represents
         the coloumn's values.
 
-    '''
+    """
     columns_number = len(data.keys())
     max_column_length = 0
 

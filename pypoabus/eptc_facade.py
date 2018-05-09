@@ -30,20 +30,19 @@ def build_url(action, parameter):
     from config.json file """
     config = load_config()
 
-    base_url = config['eptc_base_url']
-    url_action = config[action]['action']
+    base_url = config.get('eptc_base_url')
+    url_action = config.get(action).get('action')
 
     if action == 'list':
-        parameter = config[action]['zones'][parameter]['code']
+        parameter = config.get(action).get('zones').get(parameter).get('code')
 
-    url_parameters = config[action]['parameters'] % parameter
-
-    url = '%s/%s?%s' % (base_url, url_action, url_parameters)
+    url_parameters = config.get(action).get('parameters').format(parameter)
+    url = '{}/{}?{}'.format(base_url, url_action, url_parameters)
 
     return url
 
 
-def parse_schedule_page(html_doc):
+def parse_timetable_page(html_doc):
     """
     Function to parse the HTML page.
     It assumes that the HTML follows the below order:
@@ -102,24 +101,41 @@ def parse_schedule_page(html_doc):
         if re.match(time_re, div_list[i].strip()) is not None:
             schedule.add_departure_time(div_list[i].strip())
 
-
     return bus_line
 
 
-def parse_bus_list_page(html_doc):
-    """ Function to parse the bus lines names  """
-    opened_option_tag = '<Option'
-    closed_option_re = r'</option>'
-    bus_line_list = []
+def adds_missing_tags(html_doc):
+    """Fixes a issue in the orginal HTML, where the tag <Option> is not closed..
+    Changes from:
+    <Select Name=Linha class='ordenacaoSelect'>
+        <Option Value='510-87'>510   - AUXILIADORA
+        <Option Value='620-5'>520   - TRIANGULO/24 DE OUTUBRO
+    To:
+    <Select Name=Linha class='ordenacaoSelect'>
+        <Option Value='510-87'>510   - AUXILIADORA</Option>
+        <Option Value='620-5'>520   - TRIANGULO/24 DE OUTUBRO</Option>
+    """
+    opened_option_tag = r'<Option'
+    closed_option_re = r'</Option>'
 
     if re.search(closed_option_re, html_doc, re.I) is None:
         html_doc = html_doc.replace(opened_option_tag, closed_option_re + opened_option_tag)
+
+    return html_doc
+
+
+def parse_bus_list_page(html_doc):
+    """
+    Function to parse the bus lines names
+    """
+    bus_line_list = []
+    html_doc = adds_missing_tags(html_doc)
 
     soup = BeautifulSoup(html_doc, 'html.parser')
 
     for line in soup.find_all('option'):
         line_name = re.sub('[ ]+', ' ', line.text).strip()
-        line_code = line['value']
+        line_code = line.get('value')
 
         bus_line = BusLineItem(line_code, line_name)
         bus_line_list.append(bus_line)
@@ -138,8 +154,8 @@ def get_html(url):
 
     if response.status_code != 200:
         raise RemoteServerErrorException('Unable to get EPTC page content. '
-                                         'HTTP code: %s, reason: %s' % \
-            (response.status_code, response.reason))
+                                         'HTTP code: {}, reason: {}'
+                                         .format(response.status_code, response.reason))
 
     return response.text
 
@@ -148,11 +164,10 @@ def get_bus_timetable(line_code):
     """
     Get timetable from the given bus line
     """
-
     url = build_url('schedule', line_code)
     html = get_html(url)
 
-    return parse_schedule_page(html)
+    return parse_timetable_page(html)
 
 
 def list_bus_lines(zone):

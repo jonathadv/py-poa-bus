@@ -104,12 +104,12 @@ class BusLine(JSONSerializable):
     def __str__(self):
         """ to string method """
 
-        string = 'BusLine: %s - %s\n' % (self._code, self._name)
+        string = 'BusLine: {} - {}\n'.format(self._code, self._name)
         for sch in self._schedules:
-            string += 'Direction: %s, Schedule Type: %s\n' % (sch.direction, sch.schedule_day)
+            string += 'Direction: {}, Schedule Type: {}\n'.format(sch.direction, sch.schedule_day)
 
             for deperture in sch.timetable:
-                string += '%s\n' % deperture
+                string += '{}\n'.format(deperture)
 
         return string
 

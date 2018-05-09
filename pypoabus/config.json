@@ -3,12 +3,12 @@
  
     "schedule": {
         "action": "Cadastro.asp",
-        "parameters": "Linha=%s&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0"
+        "parameters": "Linha={}&Tipo=TH&Veiculo=1&Sentido=0&Logradouro=0"
     },
 
    "list": {
         "action": "Linha.asp",
-        "parameters": "cdEmp=%s",
+        "parameters": "cdEmp={}",
  
         "zones": {
              "north": {
