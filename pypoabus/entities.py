@@ -12,7 +12,6 @@
 import json
 
 
-
 class JSONSerializable():
     """ Class to simplify the JSON serialization """
 
@@ -150,9 +149,9 @@ class Schedule(JSONSerializable):
 
 class ComplexEncoder(json.JSONEncoder):
     """ Helper class to enable JSON convertion """
-    def default(self, obj):
+    def default(self, o):
         """ This is the default method"""
-        if hasattr(obj, '__json_dict__'):
-            return obj.__json_dict__()
-        else:
-            return json.JSONEncoder.default(self, obj)
+        if hasattr(o, '__json_dict__'):
+            return o.__json_dict__()
+
+        return json.JSONEncoder.default(self, o)

@@ -7,7 +7,6 @@ PyPoaBus
 Module to connect to EPTC web site and to retrieve the bus lines' data and timetables.
 """
 
-
 __author__ = 'Jonatha Daguerre Vasconcelos'
 __author_email__ = 'jonatha@daguerre.com.br'
 __license__ = 'MIT'

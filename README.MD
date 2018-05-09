@@ -14,13 +14,32 @@ Data source: www.eptc.com.br
 As far as I know, the Porto Alegre city hall doesn't provide an API to get the oficial information about bus schedules. The idea here is to provide at least a interface that allows us to convert the online information from EPTC web site to JSON representation.
 
 
-## Install
+## Setup the project
+This project uses [Pipenv](https://github.com/pypa/pipenv) as packaging tool.
+
+So you can run:
+ 
+```bash
+# Installing dependencies
+pipenv install
+
+```
+
+Running the same command using `make`: 
+
+```bash
+# Using the Makefile
+make install
+
+```
+
+
+## Install as Python Module
 ```bash
 git clone https://github.com/jonathadv/PyPoABus.git
 cd PyPoABus/
-sudo ./setup.py install
+python ./setup.py install
 ```
-
 
 ## Usage
 
@@ -70,7 +89,7 @@ The below examples are using `jq` (https://stedolan.github.io/jq/) to format the
 #### Help
 
 ```bash
-bash~$ ./cmd.py
+bash~$ python -m pypoabus
 
 usage: cmd.py [-h] [--list zone | --timetable line_code] [-v format]
 
@@ -91,7 +110,7 @@ optional arguments:
 **List bus lines**
 
 ```bash
-bash~$ ./cmd.py --list south -v json | jq  # jq is only a external tool to format json (not included) :D
+bash~$ python -m pypoabus --list south -v json | jq  # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -116,7 +135,7 @@ bash~$ ./cmd.py --list south -v json | jq  # jq is only a external tool to forma
 ```
 
 ```bash
-bash~$ ./cmd.py --list south -v table # format output as table
+bash~$ python -m pypoabus --list south -v table # format output as table
 ```
 ```bash
 
@@ -140,7 +159,7 @@ Code            Name
 **Get bus line timetable**
 
 ```bash
-bash~$ ./cmd.py --timetable 281-81 -v json | jq # jq is only a external tool to format json (not included) :D
+bash~$ python -m pypoabus --timetable 281-81 -v json | jq # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -173,7 +192,7 @@ bash~$ ./cmd.py --timetable 281-81 -v json | jq # jq is only a external tool to 
 ```
 
 ```bash
-bash~$ ./cmd.py --timetable 281-81  -v table  
+bash~$ python -m pypoabus --timetable 281-81  -v table  
 ```
 
 ```bash
