@@ -1,5 +1,8 @@
 # PyPoABus
 
+ [![Build Status](https://travis-ci.org/jonathadv/py-poa-bus.svg?branch=master)](https://travis-ci.org/jonathadv/py-poa-bus)
+
+
 Module to retrieve the bus timetables of Porto Alegre city from EPTC web site
 
 * **List bus lines by zone: north, south, east, public (from Carris company)**
