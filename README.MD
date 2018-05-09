@@ -1,6 +1,6 @@
 # PyPoABus
 
-Module to retrieve the bus schedules of Porto Alegre city.
+Module to retrieve the bus timetables of Porto Alegre city from EPTC web site
 
 * **List bus lines by zone: north, south, east, public (from Carris company)**
 * **Retrieve timetables by bus line**
