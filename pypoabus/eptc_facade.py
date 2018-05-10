@@ -10,7 +10,6 @@ import re
 
 import pkg_resources
 import requests
-from requests.exceptions import ConnectionError
 from bs4 import BeautifulSoup
 
 from .entities import BusLine, BusLineItem, Schedule
@@ -78,7 +77,7 @@ def parse_timetable_page(html_doc):
 
     if not div_list:
         raise NoContentAvailableError('Unable to retrieve information from EPTC web site. '
-                                          'Please check the bus line code and try again.')
+                                      'Please check the bus line code and try again.')
 
     line_title = div_list[0].split('-')
     line_code = line_title[0].strip()
@@ -150,12 +149,12 @@ def get_html(url):
     """
     try:
         response = requests.get(url)
-    except ConnectionError as error:
+    except requests.exceptions.ConnectionError as error:
         raise RemoteServerError('Unable to establish connection.', error)
 
     if response.status_code != 200:
         raise RemoteServerError('Unable to get EPTC page content. '
-                                         'HTTP code: {}, reason: {}'
+                                'HTTP code: {}, reason: {}'
                                 .format(response.status_code, response.reason))
 
     return response.text
