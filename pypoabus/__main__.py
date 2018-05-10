@@ -9,7 +9,7 @@ import sys
 from collections import OrderedDict
 
 from . import eptc_facade as facade
-from .exceptions import NoContentAvailableException, RemoteServerErrorException
+from .exceptions import NoContentAvailableError, RemoteServerError
 
 
 def print_err(message, exit_cmd=False):
@@ -126,11 +126,11 @@ def run(args):
             print_err('Error when parsing arguments: %s' % args, True)
 
 
-    except NoContentAvailableException:
+    except NoContentAvailableError:
         print_err('Unable to retrieve information from EPTC web site, '
                   'maybe the content is no longer available. Args = [%s]\n' % args, True)
 
-    except RemoteServerErrorException as excep:
+    except RemoteServerError as excep:
         print_err('Error to connect to the server: %s ' % excep, True)
 
 
