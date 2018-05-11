@@ -6,17 +6,22 @@ install:
 
 # Run pylint
 lint:
-	pipenv run pylint ./setup.py pypoabus
+	pipenv _run pylint ./setup.py pypoabus
 
 
 # Run tests with pytest
 test:
-	pytest -s --verbose --durations=5 --cov=pypoabus ./tests
+	pytest -s --verbose ./tests
+
+
+# Run tests with pytest and coverage
+test-cov:
+	pytest -s --verbose --cov-report term-missing --cov=pypoabus ./tests
 
 
 # Sort imports as PEP8
 isort:
-	pipenv run isort **/*.py
+	pipenv _run isort **/*.py
 
 # Display this help
 help:

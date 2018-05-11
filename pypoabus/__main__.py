@@ -12,12 +12,16 @@ from . import eptc_facade as facade
 from .exceptions import NoContentAvailableError, RemoteServerError
 
 
-def print_err(message, exit_cmd=False):
-    """ Functionto close the cmd """
+def _print_stderr(message, exit_cmd=False):
+    """ Function print to stderr and close the cmd """
     print('cmd: %s' % message, file=sys.stderr)
 
     if exit_cmd:
         sys.exit(1)
+
+def _print_stdout(message):
+    """ Function to print to stdout """
+    print(message, file=sys.stdout)
 
 
 def get_table_line(data, index):
@@ -40,9 +44,9 @@ def get_table_line(data, index):
     return tuple(result_array)
 
 
-def generate_table(title, data):
+def _build_table(title, data):
     """
-        Function to generate a table from
+        Function to build a table from
         a data structure as below:
         {
             'column1': ['c1_value1', 'c1_value2'],
@@ -73,16 +77,16 @@ def generate_table(title, data):
     for i in range(0, max_column_length):
         table_string += line_template % get_table_line(data, i)
 
-    print(table_string)
+    return table_string
 
 
-def list_to_json(list_of_obj):
+def _list_to_json(list_of_obj):
     """ Convert a object list to a JSON list """
     output = '{ "list":  %s  }' % str(list_of_obj)
-    print(output)
+    _print_stdout(output)
 
 
-def run(args):
+def _run(args):
     """ Run it """
 
     view = args.view if args.view is not None else 'json'
@@ -100,10 +104,10 @@ def run(args):
                 data['Name'] = line_names
 
                 title = 'List of Bus lines'
-                generate_table(title, data)
+                _build_table(title, data)
 
             else:
-                list_to_json(lines_list)
+                _list_to_json(lines_list)
 
         elif args.timetable is not None:
             timetable = facade.get_bus_timetable(args.timetable)
@@ -117,25 +121,26 @@ def run(args):
                                                    timetable.name,
                                                    sched.schedule_day,
                                                    sched.direction)
-                    generate_table(title, data)
+                    table_string = _build_table(title, data)
+                    _print_stdout(table_string)
 
             else:
-                print(timetable.to_json())
+                _print_stdout(timetable.to_json())
 
         else:
-            print_err('Error when parsing arguments: %s' % args, True)
+            _print_stderr('Error when parsing arguments: %s' % args, True)
 
 
     except NoContentAvailableError:
-        print_err('Unable to retrieve information from EPTC web site, '
+        _print_stderr('Unable to retrieve information from EPTC web site, '
                   'maybe the content is no longer available. Args = [%s]\n' % args, True)
 
     except RemoteServerError as excep:
-        print_err('Error to connect to the server: %s ' % excep, True)
+        _print_stderr('Error to connect to the server: %s ' % excep, True)
 
 
 
-def main():
+def _get_opts():
     """ Main function """
 
     parser = argparse.ArgumentParser(prog='pypoabus')
@@ -157,12 +162,14 @@ def main():
 
     args = parser.parse_args()
 
+
     if len(sys.argv) <= 1:
         parser.print_help()
-
     else:
-        run(args)
+        return args
 
 
-
-main()
+if __name__ == '__main__':
+    args = _get_opts()
+    if args:
+        _run(args)

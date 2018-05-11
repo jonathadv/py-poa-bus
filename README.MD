@@ -20,7 +20,7 @@ As far as I know, the Porto Alegre city hall doesn't provide an API to get the o
 ## Setup the project
 This project uses [Pipenv](https://github.com/pypa/pipenv) as packaging tool.
 
-So you can run:
+So you can _run:
  
 ```bash
 # Installing dependencies

@@ -16,7 +16,7 @@ from .entities import BusLine, BusLineItem, Schedule
 from .exceptions import NoContentAvailableError, RemoteServerError
 
 
-def load_config():
+def _load_config():
     """ Function to open configuration file """
     config_file = 'config.json'
     conf_file = open(pkg_resources.resource_filename(__package__, config_file))
@@ -25,10 +25,10 @@ def load_config():
     return config
 
 
-def build_url(action, parameter):
+def _build_url(action, parameter):
     """ Function to build URL using information
     from config.json file """
-    config = load_config()
+    config = _load_config()
 
     base_url = config.get('eptc_base_url')
     url_action = config.get(action).get('action')
@@ -42,7 +42,7 @@ def build_url(action, parameter):
     return url
 
 
-def parse_timetable_page(html_doc):
+def _parse_timetable_page(html_doc):
     """
     Function to parse the HTML page.
     It assumes that the HTML follows the below order:
@@ -104,7 +104,7 @@ def parse_timetable_page(html_doc):
     return bus_line
 
 
-def adds_missing_tags(html_doc):
+def _add_missing_tags(html_doc):
     """Fixes a issue in the orginal HTML, where the tag <Option> is not closed..
     Changes from:
     <Select Name=Linha class='ordenacaoSelect'>
@@ -124,12 +124,12 @@ def adds_missing_tags(html_doc):
     return html_doc
 
 
-def parse_bus_list_page(html_doc):
+def _parse_bus_list_page(html_doc):
     """
     Function to parse the bus lines names
     """
     bus_line_list = []
-    html_doc = adds_missing_tags(html_doc)
+    html_doc = _add_missing_tags(html_doc)
 
     soup = BeautifulSoup(html_doc, 'html.parser')
 
@@ -143,7 +143,7 @@ def parse_bus_list_page(html_doc):
     return bus_line_list
 
 
-def get_html(url):
+def _get_html(url):
     """
     Function to retrieve the HTML Page
     """
@@ -164,17 +164,17 @@ def get_bus_timetable(line_code):
     """
     Get timetable from the given bus line
     """
-    url = build_url('schedule', line_code)
-    html = get_html(url)
+    url = _build_url('schedule', line_code)
+    html = _get_html(url)
 
-    return parse_timetable_page(html)
+    return _parse_timetable_page(html)
 
 
 def list_bus_lines(zone):
     """
     Get all bus lines from a zone
     """
-    url = build_url('list', zone)
-    html = get_html(url)
+    url = _build_url('list', zone)
+    html = _get_html(url)
 
-    return parse_bus_list_page(html)
+    return _parse_bus_list_page(html)

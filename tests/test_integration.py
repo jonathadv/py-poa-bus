@@ -9,9 +9,9 @@
 
 
 """
-tests.test_class_commands
+tests.TestIntegration
 ------------------
-The test set for functions in driloader.commands.Commands
+The integration test set for functions in pypoabus.eptc_facade
 """
 
 
@@ -20,10 +20,9 @@ import pytest_mock
 
 from pypoabus import eptc_facade
 from pypoabus.exceptions import RemoteServerError, NoContentAvailableError
-from requests.exceptions import ConnectionError, RequestException
 
 class TestIntegration:
-    """ Test Commands by mocking the subprocess calls """
+    """ Integration testing """
 
     @staticmethod
     def test_get_real_south_zone_bus_list():
@@ -81,7 +80,7 @@ class TestIntegration:
     @staticmethod
     def test_error_when_html_does_not_contain_information(mocker):
         """ """
-        mocker.patch('pypoabus.eptc_facade.get_html', return_value='<html></html>')
+        mocker.patch('pypoabus.eptc_facade._get_html', return_value='<html></html>')
 
         bus_line_code = 'foo'
         with pytest.raises(NoContentAvailableError, match=r'.*Unable to retrieve information from EPTC web site.*'):
