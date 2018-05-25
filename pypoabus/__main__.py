@@ -9,7 +9,7 @@ import sys
 from collections import OrderedDict
 
 from pypoabus import __version__
-from . import eptc_facade as facade
+from . import pypoabus
 from .exceptions import NoContentAvailableError, RemoteServerError
 
 
@@ -94,11 +94,11 @@ def _run(args):
     output_format = args.format if args.format is not None else 'json'
 
     if args.debug_url:
-        facade.DEBUG_URLS = True
+        pypoabus.DEBUG_URLS = True
 
     try:
         if args.list is not None:
-            lines_list = facade.list_bus_lines(args.list)
+            lines_list = pypoabus.list_bus_lines(args.list)
 
             if output_format == 'table':
                 line_names = [line.name for line in lines_list]
@@ -115,7 +115,7 @@ def _run(args):
                 _list_to_json(lines_list)
 
         elif args.timetable is not None:
-            timetable = facade.get_bus_timetable(args.timetable)
+            timetable = pypoabus.get_bus_timetable(args.timetable)
 
             if output_format == 'table':
                 for sched in timetable.schedules:

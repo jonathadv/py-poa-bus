@@ -13,4 +13,4 @@ __author_email__ = 'jonatha@daguerre.com.br'
 __license__ = 'MIT'
 __version__ = '1.1.1'
 __copyright__ = 'Copyright 2016 Jonatha Daguerre Vasconcelos'
-__all__ = ['eptc_facade', 'exceptions', 'entities']
+__all__ = ['pypoabus', 'exceptions', 'entities']

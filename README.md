@@ -66,9 +66,9 @@ $ pipenv shell
 **List bus lines**
 
 ```Python
->>> import pypoabus.eptc_facade as facade
+>>> from pypoabus import pypoabus
 >>> zone = 'south'
->>> list_bus_lines = facade.list_bus_lines(zone)
+>>> list_bus_lines = pypoabus.list_bus_lines(zone)
 >>> for i in list_bus_lines:
 ...     print(i)
 ... 
@@ -84,9 +84,9 @@ $ pipenv shell
 **Get bus line timetable**
 
 ```Python
->>> import pypoabus.eptc_facade as facade
+>>> from pypoabus import pypoabus
 >>> bus_line_code = '281-1'
->>> timetable = facade.get_bus_timetable(bus_line_code)
+>>> timetable = pypoabus.get_bus_timetable(bus_line_code)
 >>> timetable.code
 '2811'
 >>> timetable.name
