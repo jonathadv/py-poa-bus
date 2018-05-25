@@ -4,5 +4,5 @@ build/
 
 .idea/
 .pytest_cache/
-pypoapus.egg-info/
+*.egg-info/
 dist/
