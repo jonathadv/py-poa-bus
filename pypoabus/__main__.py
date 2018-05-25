@@ -8,16 +8,18 @@ import argparse
 import sys
 from collections import OrderedDict
 
+from pypoabus import __version__
 from . import eptc_facade as facade
 from .exceptions import NoContentAvailableError, RemoteServerError
 
 
 def _print_stderr(message, exit_cmd=False):
     """ Function print to stderr and close the cmd """
-    print('cmd: %s' % message, file=sys.stderr)
+    print('pypoabus: %s' % message, file=sys.stderr)
 
     if exit_cmd:
         sys.exit(1)
+
 
 def _print_stdout(message):
     """ Function to print to stdout """
@@ -70,7 +72,7 @@ def _build_table(title, data):
 
     line_template = '%s\t\t' * columns_number + '\n'
 
-    table_string = '\n\t' * int(columns_number/2) + title + '\n\n'
+    table_string = '\n\t' * int(columns_number / 2) + title + '\n\n'
     table_string += line_template % tuple([key for key in data.keys()])
     table_string += '------------------------' * columns_number + '\n'
 
@@ -89,13 +91,16 @@ def _list_to_json(list_of_obj):
 def _run(args):
     """ Run it """
 
-    view = args.view if args.view is not None else 'json'
+    output_format = args.format if args.format is not None else 'json'
+
+    if args.debug_url:
+        facade.DEBUG_URLS = True
 
     try:
         if args.list is not None:
             lines_list = facade.list_bus_lines(args.list)
 
-            if view == 'table':
+            if output_format == 'table':
                 line_names = [line.name for line in lines_list]
                 line_codes = [line.code for line in lines_list]
 
@@ -112,7 +117,7 @@ def _run(args):
         elif args.timetable is not None:
             timetable = facade.get_bus_timetable(args.timetable)
 
-            if view == 'table':
+            if output_format == 'table':
                 for sched in timetable.schedules:
                     data = OrderedDict()
                     data['Time'] = sched.timetable
@@ -133,43 +138,53 @@ def _run(args):
 
     except NoContentAvailableError:
         _print_stderr('Unable to retrieve information from EPTC web site, '
-                  'maybe the content is no longer available. Args = [%s]\n' % args, True)
+                      'maybe the content is no longer available.\n', True)
 
     except RemoteServerError as excep:
         _print_stderr('Error to connect to the server: %s ' % excep, True)
 
 
-
 def _get_opts():
-    """ Main function """
+    """ Function to parse the cmd arguments """
 
     parser = argparse.ArgumentParser(prog='pypoabus')
+    parser.add_argument('-v', '--version', action='version',
+                        version='%(prog)s {}'.format(__version__))
+
     group = parser.add_mutually_exclusive_group()
-    group.add_argument('--list', required=False,
+    group.add_argument('-l', '--list', required=False,
                        metavar='zone',
-                       help='[north|south|east|public]',
+                       help='List all line codes by zone: [north|south|east|public]',
                        choices=['north', 'south', 'east', 'public'])
 
-    group.add_argument('--timetable', required=False,
+    group.add_argument('-t', '--timetable', required=False,
                        metavar='line_code',
-                       help='Line code like 281-1, '
-                       '101-1, etc.' 'Use --list to get line codes.')
+                       help='Line code like 281-1 and 101-1')
 
-    parser.add_argument('-v', '--view', metavar='format',
+    parser.add_argument('-f', '--format', metavar='format',
                         help='[json|table]',
                         required=False,
                         choices=['json', 'table'])
 
-    args = parser.parse_args()
+    parser.add_argument('-d', '--debug-url',
+                        action='store_true',
+                        help='Log the URL that pypoabus will call',
+                        required=False)
 
+    args = parser.parse_args()
 
     if len(sys.argv) <= 1:
         parser.print_help()
-    else:
-        return args
+        return None
+
+    return args
 
 
-if __name__ == '__main__':
+def main():
+    """ Main function """
     args = _get_opts()
     if args:
         _run(args)
+
+if __name__ == '__main__':
+    main()

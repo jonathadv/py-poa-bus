@@ -96,16 +96,16 @@ The below examples are using `jq` (https://stedolan.github.io/jq/) to format the
 ```bash
 bash~$ python -m pypoabus
 
-usage: cmd.py [-h] [--list zone | --timetable line_code] [-v format]
+usage: pypoabus [-h] [-l zone | -t line_code] [-f format] [-d]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --list zone           [north|south|east|public]
-  --timetable line_code
-                        Line code like 281-1, 101-1, etc.Use --list to get
-                        line codes.
-  -v format, --view format
+  -l zone, --list zone  List all line codes by zone: [north|south|east|public]
+  -t line_code, --timetable line_code
+                        Line code like 281-1, 101-1, etc.
+  -f format, --format format
                         [json|table]
+  -d, --debug-url       Log the URL that pypoabus will call
 
 ```
 #### Examples
@@ -115,7 +115,7 @@ optional arguments:
 **List bus lines**
 
 ```bash
-bash~$ python -m pypoabus --list south -v json | jq  # jq is only a external tool to format json (not included) :D
+bash~$ python -m pypoabus -l south -f json | jq  # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -140,7 +140,7 @@ bash~$ python -m pypoabus --list south -v json | jq  # jq is only a external too
 ```
 
 ```bash
-bash~$ python -m pypoabus --list south -v table # format output as table
+bash~$ python -m pypoabus -l south -f table # format output as table
 ```
 ```bash
 
@@ -164,7 +164,7 @@ Code            Name
 **Get bus line timetable**
 
 ```bash
-bash~$ python -m pypoabus --timetable 281-81 -v json | jq # jq is only a external tool to format json (not included) :D
+bash~$ python -m pypoabus -t 281-81 -f json | jq # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -197,7 +197,7 @@ bash~$ python -m pypoabus --timetable 281-81 -v json | jq # jq is only a externa
 ```
 
 ```bash
-bash~$ python -m pypoabus --timetable 281-81  -v table  
+bash~$ python -m pypoabus -t 281-81  -f table  
 ```
 
 ```bash

@@ -1,12 +1,15 @@
 default: help
 
-# Run pipenv install
+upgrade-dist-tools:
+	python -m pip install --upgrade setuptools wheel twine
+
+# Install packages from Pipfile
 install:
 	pipenv install --dev
 
 # Run pylint
 lint:
-	pipenv _run pylint ./setup.py pypoabus
+	pipenv run pylint ./setup.py pypoabus
 
 
 # Run tests with pytest
@@ -19,9 +22,28 @@ test-cov:
 	pytest -s --verbose --cov-report term-missing --cov=pypoabus ./tests
 
 
+# Create wheel from source
+build: upgrade-dist-tools
+	python setup.py sdist bdist_wheel
+
+
+# Remove build files
+clean:
+	rm -rf build/ driloader.egg-info/ dist/
+
 # Sort imports as PEP8
 isort:
-	pipenv _run isort **/*.py
+	isort **/*.py
+
+
+# Upload dist content to test.pypi.org
+upload-test:
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+
+# Upload dist content to pypi.org
+upload:
+	twine upload  dist/*
 
 # Display this help
 help:

@@ -7,6 +7,7 @@ This module is the interface between EPTC web site and the application
 
 import json
 import re
+import sys
 
 import pkg_resources
 import requests
@@ -15,6 +16,10 @@ from bs4 import BeautifulSoup
 from .entities import BusLine, BusLineItem, Schedule
 from .exceptions import NoContentAvailableError, RemoteServerError
 
+
+
+# Flag to enable CMD to display the URL built.
+DEBUG_URLS = False
 
 def _load_config():
     """ Function to open configuration file """
@@ -38,6 +43,9 @@ def _build_url(action, parameter):
 
     url_parameters = config.get(action).get('parameters').format(parameter)
     url = '{}/{}?{}'.format(base_url, url_action, url_parameters)
+
+    if DEBUG_URLS:
+        print('DEBUG - URL: {}'.format(url), file=sys.stderr)
 
     return url
 
