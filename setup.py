@@ -9,7 +9,7 @@
 Setup Script
 """
 
-from distutils.core import setup
+from setuptools import setup
 from pypoabus import __name__, __version__, __author__, __author_email__, __license__
 
 with open("README.md", "r") as fh:
