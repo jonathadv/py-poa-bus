@@ -24,6 +24,7 @@ setup(name=__name__,
       author=__author__,
       author_email=__author_email__,
       license=__license__,
+      url = 'https://github.com/jonathadv/py-poa-bus',
       packages=['pypoabus'],
       package_data={'pypoabus': ['config.json']},
       requires=REQUIRED,
@@ -41,6 +42,5 @@ setup(name=__name__,
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: Implementation :: CPython',
-            'Topic:: Utilities'
       ]
      )

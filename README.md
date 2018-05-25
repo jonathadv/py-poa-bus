@@ -5,17 +5,25 @@
 
 Module to retrieve the bus timetables of Porto Alegre city from EPTC web site
 
-* **List bus lines by zone: north, south, east, public (from Carris company)**
+* **List bus line codes by zone: north, south, east, public (from Carris company)**
 * **Retrieve timetables by bus line**
 
 
 Data source: www.eptc.com.br
 
 
-## Why that?
+## Why this project?
 
-As far as I know, the Porto Alegre city hall doesn't provide an API to get the oficial information about bus schedules. The idea here is to provide at least a interface that allows us to convert the online information from EPTC web site to JSON representation.
+Currently, Porto Alegre city hall doesn't provide an API to get the oficial information about bus timetables. This project aims to provide an interface  to convert the oficial online information from EPTC web site to JSON representation.
 
+
+## Installation
+
+```
+$ pip install pypoabus
+```
+* For usage as import go to [Usage](#usage).
+* To run as CMD, go to [CMD Tool](#cmd-tool).
 
 ## Setup the project
 This project uses [Pipenv](https://github.com/pypa/pipenv) as packaging tool.
