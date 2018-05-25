@@ -22,6 +22,10 @@ Currently, Porto Alegre city hall doesn't provide an API to get the oficial info
 ```
 $ pip install pypoabus
 ```
+or
+```
+$ pipenv install pypoabus
+```
 * For usage as import go to [Usage](#usage).
 * To run as CMD, go to [CMD Tool](#cmd-tool).
 
