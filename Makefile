@@ -29,7 +29,7 @@ build: upgrade-dist-tools
 
 # Remove build files
 clean:
-	rm -rf build/ driloader.egg-info/ dist/
+	rm -rf build/ pypoapus.egg-info/ dist/
 
 # Sort imports as PEP8
 isort:
