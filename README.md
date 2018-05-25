@@ -1,6 +1,9 @@
 # PyPoABus
 
- [![Build Status](https://travis-ci.org/jonathadv/py-poa-bus.svg?branch=master)](https://travis-ci.org/jonathadv/py-poa-bus)
+[![license](https://img.shields.io/pypi/l/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
+[![pypi version](https://img.shields.io/pypi/v/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
+[![python versions](https://img.shields.io/pypi/pyversions/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
+[![Build Status](https://travis-ci.org/jonathadv/py-poa-bus.svg?branch=master)](https://travis-ci.org/jonathadv/py-poa-bus)
 
 
 Module to retrieve the bus timetables of Porto Alegre city from EPTC web site
