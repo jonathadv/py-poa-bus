@@ -102,7 +102,7 @@ The below examples are using `jq` (https://stedolan.github.io/jq/) to format the
 #### Help
 
 ```bash
-bash~$ python -m pypoabus
+$ python -m pypoabus
 
 usage: pypoabus [-h] [-l zone | -t line_code] [-f format] [-d]
 
@@ -123,7 +123,7 @@ optional arguments:
 **List bus lines**
 
 ```bash
-bash~$ python -m pypoabus -l south -f json | jq  # jq is only a external tool to format json (not included) :D
+$ python -m pypoabus -l south -f json | jq  # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -148,7 +148,7 @@ bash~$ python -m pypoabus -l south -f json | jq  # jq is only a external tool to
 ```
 
 ```bash
-bash~$ python -m pypoabus -l south -f table # format output as table
+$ python -m pypoabus -l south -f table # format output as table
 ```
 ```bash
 
@@ -172,7 +172,7 @@ Code            Name
 **Get bus line timetable**
 
 ```bash
-bash~$ python -m pypoabus -t 281-81 -f json | jq # jq is only a external tool to format json (not included) :D
+$ python -m pypoabus -t 281-81 -f json | jq # jq is only a external tool to format json (not included) :D
 ```
 ```JavaScript
 {
@@ -205,7 +205,7 @@ bash~$ python -m pypoabus -t 281-81 -f json | jq # jq is only a external tool to
 ```
 
 ```bash
-bash~$ python -m pypoabus -t 281-81  -f table  
+$ python -m pypoabus -t 281-81  -f table  
 ```
 
 ```bash
