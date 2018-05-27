@@ -159,20 +159,26 @@ $ python -m pypoabus -l south -f table # format output as table
 ```
 ```bash
 
-        List of Bus lines
-
-Code            Name
-------------------------------------------------
-210-14          110 - RESTINGA NOVA VIA TRISTEZA
-210-81          1101 - RESTINGA NOVA VIA TRISTEZA/DOMINGOS E FERIADOS
-210-46          1102 - RESTINGA NOVA VIA TRISTEZA/BARRA SHOPPING
-211-11          111 - RESTINGA VELHA (TRISTEZA)
-211-12          1111 - RESTINGA VELHA(TRISTEZA)/SHOPPING
-272-33          1112 - HIPICA/TRISTEZA
-149-0           149 - ICARAI
-149-1           1491 - ICARAI(ALTO TAQUARI)
-265-0           165 - COHAB
-268-11          168 - BELEM NOVO(VIA TRISTEZA)
+┌───────────────────────────────┐
+│    List of Bus lines  (South) │
+└───────────────────────────────┘
+┌────────┬────────────────────────────────────────────────────────┐
+│ Code   │ Name                                                   │
+├────────┼────────────────────────────────────────────────────────┤
+│ 210-14 │ 110 - RESTINGA NOVA VIA TRISTEZA                       │
+├────────┼────────────────────────────────────────────────────────┤
+│ 210-81 │ 1101 - RESTINGA NOVA VIA TRISTEZA/DOMINGOS E FERIADOS  │
+├────────┼────────────────────────────────────────────────────────┤
+│ 210-46 │ 1102 - RESTINGA NOVA VIA TRISTEZA/BARRA SHOPPING       │
+├────────┼────────────────────────────────────────────────────────┤
+│ 211-11 │ 111 - RESTINGA VELHA (TRISTEZA)                        │
+├────────┼────────────────────────────────────────────────────────┤
+│ 211-12 │ 1111 - RESTINGA VELHA(TRISTEZA)/SHOPPING               │
+├────────┼────────────────────────────────────────────────────────┤
+│ 272-33 │ 1112 - HIPICA/TRISTEZA                                 │
+├────────┼────────────────────────────────────────────────────────┤
+│ 149-0  │ 149 - ICARAI                                           │
+├────────┼────────────────────────────────────────────────────────┤
 ```
 
 
@@ -213,27 +219,29 @@ $ python -m pypoabus -t 281-81 -f json | jq # jq is only a external tool to form
 
 ```bash
 $ python -m pypoabus -t 281-81  -f table  
-```
 
-```bash
-R81 - RAPIDA CAMPO NOVO | Dias Úteis | BAIRRO/CENTRO
 
-Time
-------------------------
-06:25
-06:45
-07:05
-07:25
-07:40
-08:00
+┌──────────────────────────────┐
+│    R81 - RAPIDA CAMPO NOVO   │
+└──────────────────────────────┘
+┌BAIRRO/CENTRO─┐
+│  Dias Úteis  │
+├──────────────┤
+│ 06:25        │
+│ 06:45        │
+│ 07:05        │
+│ 07:25        │
+│ 07:40        │
+│ 08:00        │
+└──────────────┘
 
-R81 - RAPIDA CAMPO NOVO | Dias Úteis | CENTRO/BAIRRO
-
-Time
-------------------------
-17:20
-17:45
-18:15
+┌CENTRO/BAIRRO─┐
+│  Dias Úteis  │
+├──────────────┤
+│ 17:20        │
+│ 17:45        │
+│ 18:15        │
+└──────────────┘
 
 
 ```

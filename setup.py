@@ -15,7 +15,7 @@ from pypoabus import __title__, __version__, __author__, __author_email__, __lic
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
 DESCRIPTION = 'Module/CLI to retrieve the bus timetables of Porto Alegre city from EPTC web site.'
-REQUIRED = ['requests', 'beautifulsoup4']
+REQUIRED = ['requests', 'beautifulsoup4', 'terminaltables']
 
 setup(name=__title__,
       version=__version__,

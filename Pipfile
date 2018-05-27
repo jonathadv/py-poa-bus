@@ -9,6 +9,7 @@ name = "pypi"
 
 requests = "*"
 "beautifulsoup4" = "*"
+terminaltables = "*"
 
 
 [dev-packages]
@@ -16,5 +17,5 @@ requests = "*"
 pylint = "*"
 isort = "*"
 pytest = "*"
-pytest-mock = "*"
-pytest-cov = "*"
+"pytest-mock" = "*"
+"pytest-cov" = "*"

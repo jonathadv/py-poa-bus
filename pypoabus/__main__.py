@@ -6,7 +6,8 @@
 
 import argparse
 import sys
-from collections import OrderedDict
+import itertools
+from terminaltables import SingleTable
 
 from pypoabus import __version__
 from . import pypoabus
@@ -26,122 +27,118 @@ def _print_stdout(message):
     print(message, file=sys.stdout)
 
 
-def get_table_line(data, index):
-    """
-    Function to retrieve each line from
-    the table as a single string like:
+def _build_timetable_as_table(bus_line):
+    """ This function first divides the bus schedules by its direction like
+    Neighborhood -> Downtown or Downtown -> Neighborhood, in portuguese
+    "BAIRRO/CENTRO" and "CENTRO/BAIRRO".
+    Once, divided, it's created a table for direction using  `terminaltables`,
+    where the column header value is the `schedule_day` property.
 
-    c1_value01    c2_value01
+    The spected output is a string like:
 
-    The values are returnd inside a tuble.
-
-    """
-    result_array = []
-    for key in data.keys():
-        array = data[key]
-        if len(array) > index:
-            result_array.append(array[index])
-        else:
-            result_array.append('')
-    return tuple(result_array)
-
-
-def _build_table(title, data):
-    """
-        Function to build a table from
-        a data structure as below:
-        {
-            'column1': ['c1_value1', 'c1_value2'],
-            'column2': ['c2_value1', 'c2_value2']
-        }
-
-        It's basically a dict where each key
-        represents a coloumn and each key's value
-        must me a list of string that represents
-        the coloumn's values.
+    ┌BAIRRO/CENTRO─────────┬──────────┐  <-- The direction
+    │ Dias Úteis │ Sábados │ Domingos │  <-- The schedule_day property
+    ├────────────┼─────────┼──────────┤
+    │ 05:30      │ 06:00   │ 06:30    │  <-- Timetable values
+    │ 05:54      │ 06:15   │ 07:03    │
 
     """
-    columns_number = len(data.keys())
-    max_column_length = 0
+    direction_dict = {}
 
-    for key in data.keys():
-        column_length = len(data[key])
+    output_title = SingleTable([['   {} - {}  '.format(bus_line.code, bus_line.name)]])
+    output = '{}\n'.format(output_title.table)
+    header_blank_spaces = ' '
 
-        if column_length > max_column_length:
-            max_column_length = column_length
+    # Checks if the table has enough width to carry the title, otherwise, adds more spaces
+    # to the columns' headers in order to increase the table width.
+    # Usually the table is not big enough when the BusLine has less than two schedules.
+    # The minimum length required for a title is 15 spaces.
+    # It's needed since terminaltables hides the title if it doesn't fit in the table width.
+    # https://github.com/Robpol86/terminaltables/blob/master/terminaltables/build.py  # L73
+    if len(bus_line.schedules) <= 2 and len(bus_line.schedules[0].direction) < 15:
+        difference = 15 - len(bus_line.schedules[0].direction)
+        if difference % 2 != 0:
+            difference += 1
+        header_blank_spaces = ' ' * (difference // 2)
 
-    line_template = '%s\t\t' * columns_number + '\n'
+    for schedule in bus_line.schedules:
+        data_table = direction_dict.get(schedule.direction, [])
+        if not data_table:
+            direction_dict[schedule.direction] = data_table
 
-    table_string = '\n\t' * int(columns_number / 2) + title + '\n\n'
-    table_string += line_template % tuple([key for key in data.keys()])
-    table_string += '------------------------' * columns_number + '\n'
+        header = '{}{}{}'.format(header_blank_spaces, schedule.schedule_day, header_blank_spaces)
+        data_table_coloun = [header]
+        data_table_coloun.extend(schedule.timetable)
+        data_table.append(data_table_coloun)
 
-    for i in range(0, max_column_length):
-        table_string += line_template % get_table_line(data, i)
+    for key in direction_dict:
+        main_list_table = []
+        for line in itertools.zip_longest(*direction_dict[key], fillvalue=''):
+            main_list_table.append(list(line))
+            actual_table = SingleTable(main_list_table, key)
+        output += '{}\n\n'.format(actual_table.table)
 
-    return table_string
+    return output
+
+
+def _build_bus_list_as_table(lines_list, zone):
+    output_title = SingleTable([['   List of Bus lines  ({})'.format(zone.title())]])
+    output = '{}\n'.format(output_title.table)
+    data_table = [['Code', 'Name']]
+    for line in lines_list:
+        data_table.append([line.code, line.name])
+
+    actual_table = SingleTable(data_table)
+    actual_table.inner_row_border = True
+    output += '{}\n\n'.format(actual_table.table)
+    return str(output)
 
 
 def _list_to_json(list_of_obj):
     """ Convert a object list to a JSON list """
     output = '{ "list":  %s  }' % str(list_of_obj)
-    _print_stdout(output)
+    return output
 
 
 def _run(args):
     """ Run it """
 
-    output_format = args.format if args.format is not None else 'json'
+    output_format = args.format if args.format else 'json'
 
     if args.debug_url:
         pypoabus.DEBUG_URLS = True
 
     try:
-        if args.list is not None:
+        if args.list:
             lines_list = pypoabus.list_bus_lines(args.list)
 
             if output_format == 'table':
-                line_names = [line.name for line in lines_list]
-                line_codes = [line.code for line in lines_list]
-
-                data = OrderedDict()
-                data['Code'] = line_codes
-                data['Name'] = line_names
-
-                title = 'List of Bus lines'
-                _build_table(title, data)
+                table_string = _build_bus_list_as_table(lines_list, args.list)
+                _print_stdout(table_string)
 
             else:
-                _list_to_json(lines_list)
+                json_string = _list_to_json(lines_list)
+                _print_stdout(json_string)
 
-        elif args.timetable is not None:
-            timetable = pypoabus.get_bus_timetable(args.timetable)
+        elif args.timetable:
+            bus_line = pypoabus.get_bus_timetable(args.timetable)
 
             if output_format == 'table':
-                for sched in timetable.schedules:
-                    data = OrderedDict()
-                    data['Time'] = sched.timetable
-
-                    title = '%s - %s | %s | %s' % (timetable.code,
-                                                   timetable.name,
-                                                   sched.schedule_day,
-                                                   sched.direction)
-                    table_string = _build_table(title, data)
-                    _print_stdout(table_string)
-
+                table_string = _build_timetable_as_table(bus_line)
+                _print_stdout(table_string)
             else:
-                _print_stdout(timetable.to_json())
+                json_string = bus_line.to_json()
+                _print_stdout(json_string)
 
         else:
-            _print_stderr('Error when parsing arguments: %s' % args, True)
-
+            _print_stderr('Error when parsing arguments: {}\n'.format(args), True)
 
     except NoContentAvailableError:
         _print_stderr('Unable to retrieve information from EPTC web site, '
                       'maybe the content is no longer available.\n', True)
 
     except RemoteServerError as excep:
-        _print_stderr('Error to connect to the server: %s ' % excep, True)
+        _print_stderr('Error to connect to the server: {}\n'.format(excep), True)
 
 
 def _get_opts():
@@ -185,6 +182,7 @@ def main():
     args = _get_opts()
     if args:
         _run(args)
+
 
 if __name__ == '__main__':
     main()
