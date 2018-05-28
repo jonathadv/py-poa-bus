@@ -5,11 +5,12 @@
 """ CMD Helper Script """
 
 import argparse
-import sys
 import itertools
+import sys
+
+from pypoabus import __title__, __version__
 from terminaltables import SingleTable
 
-from pypoabus import __version__
 from . import pypoabus
 from .exceptions import NoContentAvailableError, RemoteServerError
 
@@ -96,7 +97,7 @@ def _build_bus_list_as_table(lines_list, zone):
 
 def _list_to_json(list_of_obj):
     """ Convert a object list to a JSON list """
-    output = '{ "list":  %s  }' % str(list_of_obj)
+    output = '{ "list":  %s }' % str(list_of_obj)
     return output
 
 
@@ -144,7 +145,7 @@ def _run(args):
 def _get_opts():
     """ Function to parse the cmd arguments """
 
-    parser = argparse.ArgumentParser(prog='pypoabus')
+    parser = argparse.ArgumentParser(prog=__title__)
     parser.add_argument('-v', '--version', action='version',
                         version='%(prog)s {}'.format(__version__))
 

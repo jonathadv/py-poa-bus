@@ -16,8 +16,6 @@ from bs4 import BeautifulSoup
 from .entities import BusLine, BusLineItem, Schedule
 from .exceptions import NoContentAvailableError, RemoteServerError
 
-
-
 # Flag to enable CMD to display the URL built.
 DEBUG_URLS = False
 
