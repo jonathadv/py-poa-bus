@@ -8,10 +8,9 @@ import argparse
 import itertools
 import sys
 
-from pypoabus import __title__, __version__
 from terminaltables import SingleTable
 
-from . import pypoabus
+from . import __title__, __version__, pypoabus
 from .exceptions import NoContentAvailableError, RemoteServerError
 
 
