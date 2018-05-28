@@ -9,7 +9,7 @@ install:
 
 # Run pylint
 lint:
-	pipenv run pylint ./setup.py pypoabus
+	pipenv run pylint ./setup.py pypoabus tests
 
 
 # Run tests with pytest
