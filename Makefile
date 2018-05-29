@@ -22,6 +22,10 @@ test-cov:
 	pytest -s --verbose --cov-report term-missing --cov=pypoabus ./tests
 
 
+# Upload coverage report o codecov.io
+codecov:
+	codecov --token=$${CODECOV_TOKEN}
+
 # Create wheel from source
 build: upgrade-dist-tools
 	python setup.py sdist bdist_wheel

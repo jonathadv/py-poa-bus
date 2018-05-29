@@ -10,3 +10,6 @@ install:
 
 script:
     - make lint test-cov
+
+after_success:
+    - codecov
