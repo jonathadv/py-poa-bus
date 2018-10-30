@@ -16,7 +16,7 @@ terminaltables = "*"
 
 pylint = "*"
 isort = "*"
-pytest = "*"
+pytest = "==3.6.0"
 "pytest-mock" = "*"
 "pytest-cov" = "*"
 codecov = "*"
