@@ -1,7 +1,7 @@
 default: help
 
 upgrade-dist-tools:
-	python -m pip install --upgrade setuptools wheel twine
+	pipenv run python -m pip install --upgrade setuptools wheel twine
 
 # Install packages from Pipfile
 install:
@@ -14,21 +14,21 @@ lint:
 
 # Run tests with pytest
 test:
-	pytest -s --verbose ./tests
+	pipenv run pytest -s --verbose ./tests
 
 
 # Run tests with pytest and coverage
 test-cov:
-	pytest -s --verbose --cov-report term-missing --cov=pypoabus ./tests
+	pipenv run pytest -s --verbose --cov-report term-missing --cov=pypoabus ./tests
 
 
 # Upload coverage report o codecov.io
 codecov:
-	codecov --token=$${CODECOV_TOKEN}
+	pipenv run codecov --token=$${CODECOV_TOKEN}
 
 # Create wheel from source
 build: upgrade-dist-tools
-	python setup.py sdist bdist_wheel
+	pipenv run python setup.py sdist bdist_wheel
 
 
 # Remove build files
@@ -37,17 +37,17 @@ clean:
 
 # Sort imports as PEP8
 isort:
-	isort **/*.py
+	pipenv run isort **/*.py
 
 
 # Upload dist content to test.pypi.org
 upload-test:
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	pipenv run twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 
 # Upload dist content to pypi.org
 upload:
-	twine upload  dist/*
+	pipenv run twine upload  dist/*
 
 # Display this help
 help:
