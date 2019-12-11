@@ -27,7 +27,7 @@ setup(name=__title__,
       packages=['pypoabus'],
       package_data={'pypoabus': ['config.json']},
       install_requires=REQUIRED,
-      python_requires=">=3.4.*",
+      python_requires=">=3.5.*",
       long_description=LONG_DESCRIPTION,
       long_description_content_type="text/markdown",
       classifiers=[
