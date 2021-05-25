@@ -1,8 +1,9 @@
+# Project Deprecation Notice
+This project is deprecated since EPTC is no longer making the time tables available.
+
+
 # PyPoABus
 
-[![license](https://img.shields.io/pypi/l/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
-[![pypi version](https://img.shields.io/pypi/v/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
-[![python versions](https://img.shields.io/pypi/pyversions/pypoabus.svg)](https://pypi.python.org/pypi/pypoabus)
 [![Build Status](https://travis-ci.org/jonathadv/py-poa-bus.svg?branch=master)](https://travis-ci.org/jonathadv/py-poa-bus)
 [![Code covarage](https://codecov.io/gh/jonathadv/py-poa-bus/branch/master/graph/badge.svg)](https://codecov.io/gh/jonathadv/py-poa-bus)
 
@@ -20,18 +21,6 @@ Data source: www.eptc.com.br
 
 Currently, Porto Alegre city hall doesn't provide an API to get the oficial information about bus timetables. This project aims to provide an interface  to convert the oficial online information from EPTC web site to JSON representation.
 
-
-## Installation
-
-```
-$ pip install pypoabus
-```
-or
-```
-$ pipenv install pypoabus
-```
-* For usage as import go to [Usage](#usage).
-* To run as CMD, go to [CMD Tool](#cmd-tool).
 
 ## Setup the project
 This project uses [Pipenv](https://github.com/pypa/pipenv) as packaging tool.
